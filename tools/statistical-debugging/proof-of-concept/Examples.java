@@ -84,9 +84,14 @@ abstract class GCD extends CatchingTestCase {
     }
 
     public boolean evaluate_gcd(int result, int x, int y) {
+        // 0 is a special case
+        if (x == 0 && y == 0) return result == 0;
+        if (result == 0) return false;
+
         // Note that -Integer.MIN_VALUE == Integer.MIN_VALUE.
         // These are the only inputs for which the result is negative.
-        if (x == Integer.MIN_VALUE && y == Integer.MIN_VALUE)
+        if ((x == 0 || x == Integer.MIN_VALUE) &&
+            (y == 0 || y == Integer.MIN_VALUE))
             return result == Integer.MIN_VALUE;
         if (result < 0) return false;
 
@@ -94,9 +99,8 @@ abstract class GCD extends CatchingTestCase {
         // divisor of both inputs, except gcd(0, x) = gcd(x, 0) = x.
         // (Every number is a divisor of 0; that's why ^ is an exception.)
 
-        if (x == 0) return result == iabs(y);
-        if (y == 0) return result == iabs(x);
-        if (result <= 0) return false;
+        if (x == 0) return result == y || result == -y;
+        if (y == 0) return result == x || result == -x;
 
         // the greatest common divisor is a common divisor
         if (x % result != 0) return false;
@@ -105,9 +109,7 @@ abstract class GCD extends CatchingTestCase {
         // gcd is the *greatest* common divisor.
         // In other words, x and y have no other common divisors.
         // Stated in math: gcd(x/d, y/d) == 1 where d = gcd(x, y).
-        int x_specific = x / result;
-        int y_specific = y / result;
-        if (gcd(x_specific, y_specific) != 1) return false;
+        if (gcd(x / result, y / result) != 1) return false;
 
         // Using a buggy gcd to verify itself is slightly fishy.  It may allow
         // an implementation with an error if that error passes all other
