@@ -12,7 +12,7 @@ of `gcd` in the `evaluate_gcd` method.
 
 In `revert-f2fe93d83e0165632516c2a53f517a655f63484e.patch` we have a
 set of changes that undo `f2fe93d83e0165632516c2a53f517a655f63484e`,
-which would restore the older defective specification.
+i.e. they restore the older defective specification.
 
 The patch file contains multiple changes unrelated to this defect.  To
 shrink the patch down to just the defect-related parts, simply run
@@ -22,10 +22,14 @@ It will print some output telling you which diff hunks it's trying
 out, then ask you `Does this set have the bug [yn]? `.  Enter `y` or
 `n`.  To determine whether a given set of diff hunks exhibits the bug,
 you can run `./run.sh`.  The exit status tells you whether the bug is
-present: `0` means absent, `1` is present and `125` is undecided (same
-as `git bisect run` commands).
+present: `0` means absent, `1` is present and `125` is undecided.
 
 If you give the inputs suggested by `run.sh` then `refine-diff.py`
 should produce the output line
 `filterdiff 'revert-f2fe93d83e0165632516c2a53f517a655f63484e.patch' --hunks 1`
 followed by the output of that command.
+
+The exit statuses of `run.sh` makes it a suitable `git bisect run`
+command, so you could also use it to automatically determine that it
+is in fact commit `f2fe93d83e0165632516c2a53f517a655f63484e` which
+fixes the specification of `gcd`.

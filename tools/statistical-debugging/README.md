@@ -60,6 +60,6 @@ analyze any observable characteristic.  Here are some more ideas:
 For example, an `indexOf` method returning a negative number might
 indicate a bug, in C-inspired libraries and languages.  You might
 exhibit a bug more often when a given method returns a `Left(_)`
-rather than a `Right(_)`, or when it throws an exception---although if
+rather than a `Right(_)`, or when it throws an exception—although if
 your design your APIs such that throwing an exception is always a bug,
 this latter observation is not particularly helpful.
