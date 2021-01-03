@@ -26,12 +26,20 @@ def find_minimal_set():
     evaluate = partial_evaluate(test_cases)
     all_of_them = list(range(len(test_cases)))
     for _ in range(100):
-        random.shuffle(test_cases)
+        # Try each pair in both orderings in guaranteed O(1) runs.
+        random.shuffle(test_cases) if _ != 1 else test_cases.reverse()
+
         has_bug = evaluate(all_of_them)
         if not has_bug: continue
         minimal_set = dd.ddmin(len(test_cases), evaluate)
         case_combination = [test_cases[i] for i in minimal_set]
         return case_combination
+
+        # Trying all triples, quadruples, k-tuples, in a guaranteed
+        # rather than expected k! runs is impossible for k = 3, n = 5.
+
+        # Greedily committing to untried k-tuples until the next run
+        # is uniquely determined is too slow for non-trivial n (and k).
 
 def partial_evaluate(test_cases):
     def evaluate(indices):
